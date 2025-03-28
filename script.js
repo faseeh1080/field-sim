@@ -19,8 +19,20 @@ class Charge {
     }
 }
 
-let myCharge = new Charge(50, 50, 10, 2);
+let charges = [];
 let lastTime = null;
+
+function createNewCharge() {
+    charges.push(new Charge(Math.round(canvas.width / 2), Math.round(canvas.height / 2), 18, 1));
+}
+
+function drawCharges() {
+    charges.forEach(element => {
+        element.draw();
+    });
+}
+
+document.getElementById('new-btn').addEventListener('click', createNewCharge);
 
 function animate(currentTime) {
     if (lastTime === null) lastTime = currentTime;
@@ -30,13 +42,15 @@ function animate(currentTime) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
 
-    myCharge.draw();
-    myCharge.x += 100 * deltaTime;
-    if (myCharge.x > canvas.width + myCharge.radius) {
-        myCharge.x = -myCharge.radius;
-    }
+    drawCharges();
+    charges.forEach(element => {
+        element.x += 50 * deltaTime;
+    });
 
     requestAnimationFrame(animate); // Loop the animation
 }
 
-requestAnimationFrame(animate);
+function init() {
+    requestAnimationFrame(animate);
+}
+init();
